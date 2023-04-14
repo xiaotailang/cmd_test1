@@ -70,8 +70,6 @@ ADC时钟来源于PCLK，PCLK由SYSCLK分频得到，而SYSCLK来自HCLK的分�
    :width: 17cm
    :height: 5.032cm
 
-   图示 1: ADC时钟来源
-
 备注：M400的典型SYSCLK为200M。XHOSC为外部晶振，M400开发板MCU_dev
 V1.0使用的XHOSC为30MHz。
 
