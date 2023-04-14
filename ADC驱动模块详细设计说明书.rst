@@ -65,7 +65,7 @@
 
 ADC时钟来源于PCLK，PCLK由SYSCLK分频得到，而SYSCLK来自HCLK的分频，HCLK来自SYSCLK或SYSCLK的特殊分频，SYSCLK可选PLL、HOSC、LOSC三者之一。下图为M400单片机中与ADC相关的时钟结构图。
 
-.. figure:: Pictures/100000000000036E0000010410A36C5233FFB620.png
+.. figure:: Pictures/1.png
    :alt: 图示 1: ADC时钟来源
    :width: 17cm
    :height: 5.032cm
