@@ -180,12 +180,10 @@ ADC的总体设计是沿用ulinx系统中的ADC驱动框架，通过在伪文件
 
 ADC设备注册流程如图，通过boardctl()接口调用板级初始化程序完成ADC的硬件初始化，设备注册流程，设备注册成功后会在ulinx系统伪文件系统中生成字符设备，设备地址一般是形如/dev/adcX的形式，支持通过标准IO操作读写设备。
 
-.. figure:: Pictures/1000020100000495000001CE13600E8BE2CB26D7.png
+.. figure:: pic/ADC驱动注册流程.png
    :alt: 图示 2: ADC驱动注册流程
    :width: 15.73cm
    :height: 6.195cm
-
-   图示 2: ADC驱动注册流程
 
 设备\ **使用**
 ~~~~~~~~~~~~~~
@@ -193,7 +191,7 @@ ADC设备注册流程如图，通过boardctl()接口调用板级初始化程序�
 上层应用使用open函数开启ADC设备时
 底层驱动会完成硬件的初始化，然后把ADC设备绑定到文件IO操作的标准函数中，之后就可以向访问文件一样操作ADC设备。ADC设备open流程如下：
 
-.. figure:: Pictures/100002010000044F000002D55D7C138AAEC02630.png
+.. figure:: pic/ADC设备开启流程.png
    :alt: 
    :width: 15.393cm
    :height: 10.756cm
@@ -230,17 +228,17 @@ static const struct adc_ops_s g_adcops =
 
 {
 
-.ao_bind = adc_bind,
+   .ao_bind = adc_bind,
 
-.ao_reset = adc_reset,
+   .ao_reset = adc_reset,
 
-.ao_setup = adc_setup,
+   .ao_setup = adc_setup,
 
-.ao_shutdown = adc_shutdown,
+   .ao_shutdown = adc_shutdown,
 
-.ao_rxint = adc_rxint,
+   .ao_rxint = adc_rxint,
 
-.ao_ioctl = adc_ioctl,
+   .ao_ioctl = adc_ioctl,
 
 };
 
@@ -252,85 +250,85 @@ static struct taishan400_dev_s g_adcpriv1 =
 
 {
 
-.irq = TAISHAN400_IRQ_ADC,
+   .irq = TAISHAN400_IRQ_ADC,
 
-.isr = adc123_interrupt,
+   .isr = adc123_interrupt,
 
-.intf = 1,
+   .intf = 1,
 
-.base = TAISHAN400_ANACTRL_BASE,
+   .base = TAISHAN400_ANACTRL_BASE,
 
-.adcpara.avgTime = ADC_CON1_AVGTIMES_1,
+   .adcpara.avgTime = ADC_CON1_AVGTIMES_1,
 
-.adcpara.chCombined = ADC_CON3_CHNCOMBINED_0,
+   .adcpara.chCombined = ADC_CON3_CHNCOMBINED_0,
 
-.adcpara.smpWidth = ADC_CON1_SMP_WIDTH_(8),
+   .adcpara.smpWidth = ADC_CON1_SMP_WIDTH_(8),
 
-#ifdef ADC_HAVE_TIMER
+   #ifdef ADC_HAVE_TIMER
 
-.adcpara.waitFetch = ADC_CON1_NOTWAITFETCH,
+   .adcpara.waitFetch = ADC_CON1_NOTWAITFETCH,
 
-.adcpara.trigSrc = ADC_CON1_TRIG_SEL_TIMERD1,
+   .adcpara.trigSrc = ADC_CON1_TRIG_SEL_TIMERD1,
 
-.adcpara.trigEn = ADC_CON1_TRIG_EN,
+   .adcpara.trigEn = ADC_CON1_TRIG_EN,
 
-#else
+   #else
 
-.adcpara.trigEn = ADC_CON1_TRIG_DIS,
+   .adcpara.trigEn = ADC_CON1_TRIG_DIS,
 
-#endif
+   #endif
 
-#ifdef ADC1_HAVE_TIMER
+   #ifdef ADC1_HAVE_TIMER
 
-.timirq = ADC1_TIMER_IRQ,
+   .timirq = ADC1_TIMER_IRQ,
 
-.tbase = ADC1_TIMER_BASE,
+   .tbase = ADC1_TIMER_BASE,
 
-.freq = ADC_SAMPLE_FREQUENCY,
+   .freq = ADC_SAMPLE_FREQUENCY,
 
-.cfreq = ADC_COUNT_FREQUENCY,
+   .cfreq = ADC_COUNT_FREQUENCY,
 
-.timpara.matchCtl = TC_MCR_CLEARTC,
+   .timpara.matchCtl = TC_MCR_CLEARTC,
 
-.timpara.outMode = 0,
+   .timpara.outMode = 0,
 
-.timpara.outPulseW= 0,
+   .timpara.outPulseW= 0,
 
-#ifdef ADC_TIRGGER_CAPTURE
+   #ifdef ADC_TIRGGER_CAPTURE
 
-.timpara.prescale = ADC_TIRGGER_COUNTER_DIV;
+   .timpara.prescale = ADC_TIRGGER_COUNTER_DIV;
 
-#endif
+   #endif
 
-#endif
+   #endif
 
-#ifdef ADC1_HAVE_DMA
+   #ifdef ADC1_HAVE_DMA
 
-.dmachan = {DMAMAP_DMA0S0,DMAMAP_DMA1S0},
+   .dmachan = {DMAMAP_DMA0S0,DMAMAP_DMA1S0},
 
-.hasdma = true,
+   .hasdma = true,
 
-.s_base = TAISHAN400_ANACTRL_BASE_S,
+   .s_base = TAISHAN400_ANACTRL_BASE_S,
 
-.blocks = 1,
+   .blocks = 1,
 
-.trcnt = 1,
+   .trcnt = 1,
 
-.dmabuffer = {0},
+   .dmabuffer = {0},
 
-#endif
+   #endif
 
-#ifdef CONFIG_PM
+   #ifdef CONFIG_PM
 
-.pm_callback =
+   .pm_callback =
 
-{
+   {
 
-.prepare = adc_pm_prepare,
+   .prepare = adc_pm_prepare,
 
-}
+   }
 
-#endif
+   #endif
 
 };
 
